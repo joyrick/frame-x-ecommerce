@@ -1,0 +1,13 @@
+# Gallery Images
+
+This directory contains gallery and carousel images.
+
+To use actual gallery images:
+1. Run `./scripts/download-images.sh` from the project root
+2. Or manually download and place images here
+
+## Expected Files:
+- ferrari.png (copy of ferrari_key.png)
+- lamborghini.png
+- porsche.png  
+- detail-shot.jpg

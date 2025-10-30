@@ -1,0 +1,12 @@
+# Placeholder Images
+
+This directory contains placeholder images for testing local image setup.
+
+To use actual product images:
+1. Run `./scripts/download-images.sh` from the project root
+2. Or manually download and place images here
+
+## Expected Files:
+- ferrari_key.png (main Ferrari image) ✅
+- lamborghini_key.png (main Lamborghini image) ✅  
+- porsche-frame.png (main Porsche image) ✅

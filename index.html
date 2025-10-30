@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frame X - Dollar x Ferrari Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'ferrari-red': '#D40000',
+              'brand-dark': '#0a0a0a',
+            },
+            transitionProperty: {
+              'width': 'width',
+              'height': 'height',
+              'spacing': 'margin, padding',
+            }
+          }
+        }
+      }
+    </script>
+  <style>
+      ::selection {
+        background-color: #D40000;
+        color: white;
+      }
+      ::-moz-selection {
+        background-color: #D40000;
+        color: white;
+      }
+      @keyframes sparkle-burst {
+        0% {
+          transform: scale(0.5) rotate(0deg);
+          opacity: 1;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5) rotate(90deg) translate(var(--tx, 0), var(--ty, 0));
+          opacity: 0;
+        }
+      }
+      .sparkle-instance {
+        position: absolute;
+        pointer-events: none;
+        animation: sparkle-burst 700ms ease-out forwards;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-dark text-white font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
