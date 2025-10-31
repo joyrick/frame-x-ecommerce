@@ -1,70 +1,41 @@
 // Image paths for products and gallery
-// Main product images (Ferrari, Lamborghini, Porsche) are now local files
-// Only detail shot still uses external URL
-
-export const PRODUCT_IMAGES = {
-  FERRARI_FRAME: '/images/products/ferrari_key.png',
-  LAMBORGHINI_FRAME: '/images/products/lamborghini_key.png', 
-  PORSCHE_FRAME: '/images/products/porsche-frame.png',
-} as const;
-
-export const GALLERY_IMAGES = {
+export const IMAGE_PATHS = {
   FERRARI: '/images/products/ferrari_key.png',
   LAMBORGHINI: '/images/products/lamborghini_key.png',
   PORSCHE: '/images/products/porsche-frame.png',
   DETAIL_SHOT: 'https://i.imgur.com/1Bw1bXj.jpeg',
 } as const;
 
-// Local image paths (use these when you have downloaded the images)
-export const LOCAL_PRODUCT_IMAGES = {
-  FERRARI_FRAME: '/images/products/ferrari_key.png',
-  LAMBORGHINI_FRAME: '/images/products/lamborghini_key.png',
-  PORSCHE_FRAME: '/images/products/porsche-frame.png',
-} as const;
-
-export const LOCAL_GALLERY_IMAGES = {
-  FERRARI: '/images/products/ferrari_key.png',
-  LAMBORGHINI: '/images/products/lamborghini_key.png', 
-  PORSCHE: '/images/products/porsche-frame.png',
-  DETAIL_SHOT: '/images/gallery/detail-shot.jpg',
-} as const;
-
 // Helper function to get all gallery images as an array
-export const getGalleryImages = (useLocal = false) => {
-  const images = useLocal ? LOCAL_GALLERY_IMAGES : GALLERY_IMAGES;
+export const getGalleryImages = () => {
   return [
-    images.FERRARI,
-    images.LAMBORGHINI,
-    images.PORSCHE,
-    // Removed DETAIL_SHOT from gallery
+    IMAGE_PATHS.FERRARI,
+    IMAGE_PATHS.LAMBORGHINI,
+    IMAGE_PATHS.PORSCHE,
   ];
 };
 
 // Helper function to get product image
-export const getProductImage = (productType: 'ferrari' | 'lamborghini' | 'porsche', useLocal = false) => {
-  const images = useLocal ? LOCAL_PRODUCT_IMAGES : PRODUCT_IMAGES;
-  
+export const getProductImage = (productType: 'ferrari' | 'lamborghini' | 'porsche') => {
   switch (productType) {
     case 'ferrari':
-      return images.FERRARI_FRAME;
+      return IMAGE_PATHS.FERRARI;
     case 'lamborghini':
-      return images.LAMBORGHINI_FRAME;
+      return IMAGE_PATHS.LAMBORGHINI;
     case 'porsche':
-      return images.PORSCHE_FRAME;
+      return IMAGE_PATHS.PORSCHE;
     default:
-      return images.FERRARI_FRAME;
+      return IMAGE_PATHS.FERRARI;
   }
 };
 
 // Helper function to map gallery image URL to product ID
-export const getProductIdFromImage = (imageUrl: string, useLocal = false): string | null => {
-  const images = useLocal ? LOCAL_GALLERY_IMAGES : GALLERY_IMAGES;
-  
-  if (imageUrl === images.FERRARI) {
+export const getProductIdFromImage = (imageUrl: string): string | null => {
+  if (imageUrl === IMAGE_PATHS.FERRARI) {
     return 'ferrari-dxfe-001';
-  } else if (imageUrl === images.LAMBORGHINI) {
+  } else if (imageUrl === IMAGE_PATHS.LAMBORGHINI) {
     return 'lamborghini-dxle-001';
-  } else if (imageUrl === images.PORSCHE) {
+  } else if (imageUrl === IMAGE_PATHS.PORSCHE) {
     return 'porsche-dxpe-001';
   }
   

@@ -16,7 +16,7 @@ import { Footer } from './components/Footer';
 import { CarouselOverlay } from './components/CarouselOverlay';
 import { Reviews } from './components/Reviews';
 import { Product } from './types';
-import { PRODUCT_IMAGES, getGalleryImages, getProductIdFromImage } from './constants/images';
+import { getGalleryImages, getProductIdFromImage } from './constants/images';
 import { useLanguage } from './context/LanguageContext';
 
 const products: Product[] = [
@@ -25,7 +25,7 @@ const products: Product[] = [
     name: 'Step by Step Frame',
     edition: 'DOLLAR X FERRARI EDITION',
     price: 19.99,
-    imageUrl: PRODUCT_IMAGES.FERRARI_FRAME,
+    imageUrl: '/images/products/ferrari_key.png',
     description: "The ultimate conversation starter for the ambitious. This isn't just art; it's a statement. A daily reminder of the two simple steps to achieving your dreams. Encased in a premium, shadowbox frame, the 'Dollar x Ferrari' edition is a masterpiece of minimalist motivation. Step 1: The Grind. Step 2: The Reward.",
     reviews: [
       { id: 'rev1', author: 'Alex R.', rating: 5, comment: "Absolutely stunning piece. The quality is top-notch and it looks amazing on my office wall. Constant motivation!", date: '2023-10-15' },
@@ -38,7 +38,7 @@ const products: Product[] = [
     name: 'Step by Step Frame',
     edition: 'DOLLAR X LAMBORGHINI EDITION',
     price: 19.99,
-    imageUrl: PRODUCT_IMAGES.LAMBORGHINI_FRAME,
+    imageUrl: '/images/products/lamborghini_key.png',
     description: "Unleash your inner bull. This piece embodies raw power and audacious goals. It's not just decor; it's a declaration of intent. A daily visualization of the path from relentless effort to untamed success. The 'Dollar x Lamborghini' edition is for those who refuse to be tamed. Step 1: The Hustle. Step 2: The Victory.",
     reviews: [
       { id: 'rev4', author: 'Mike P.', rating: 5, comment: "The Lamborghini edition is just pure aggression and I love it. The colors are vibrant and it gets noticed.", date: '2023-10-20' },
@@ -50,7 +50,7 @@ const products: Product[] = [
     name: 'Step by Step Frame',
     edition: 'DOLLAR X PORSCHE EDITION',
     price: 19.30,
-    imageUrl: PRODUCT_IMAGES.PORSCHE_FRAME,
+    imageUrl: '/images/products/porsche-frame.png',
     description: "Precision engineered for success. This frame represents the pinnacle of performance and timeless design. It's more than art; it's a philosophy. A daily blueprint for turning meticulous planning into iconic achievements. The 'Dollar x Porsche' edition is a tribute to legacy builders. Step 1: The Craft. Step 2: The Legacy.",
     reviews: [
       { id: 'rev6', author: 'David L.', rating: 5, comment: "The Porsche version is so classy and understated. It fits my aesthetic perfectly. Very high-quality materials.", date: '2023-10-11' },
@@ -58,9 +58,7 @@ const products: Product[] = [
       { id: 'rev8', author: 'Tom H.', rating: 5, comment: "Elegant and motivational. It's the first thing I see when I start my workday.", date: '2023-09-30' },
     ]
   }
-];
-
-const galleryImages = getGalleryImages(true); // Using local images with ferrari_key.png
+];  const galleryImages = getGalleryImages();
 
 
 const App: React.FC = () => {
@@ -105,7 +103,7 @@ const App: React.FC = () => {
     setActiveImageUrl(imageUrl);
     
     // Map gallery image to corresponding product
-    const productId = getProductIdFromImage(imageUrl, true);
+    const productId = getProductIdFromImage(imageUrl);
     
     if (productId && productId !== selectedProductId) {
       setSelectedProductId(productId);
