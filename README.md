@@ -9,12 +9,14 @@ A modern, luxury e-commerce application showcasing premium frames with Ferrari, 
 ## 🎯 Features
 
 - **Premium Product Showcase**: Interactive product gallery with 3D tilt effects
+- **Multi-Language Support**: 🇸🇰 Slovak and 🇬🇧 English with real-time switching
 - **Multi-Currency Support**: EUR, USD, GBP with real-time conversion
 - **Shopping Cart**: Advanced cart management with quantity controls
 - **Stripe Integration**: Mockup and production-ready payment processing
 - **Responsive Design**: Mobile-first, works on all devices
 - **Image Management**: Organized local and external image handling
 - **Modern UI**: Dark theme with Ferrari-inspired red accents
+- **Translation System**: Complete localization with nested translation keys
 
 ## 🚀 Live Demo
 
@@ -32,6 +34,24 @@ A modern, luxury e-commerce application showcasing premium frames with Ferrari, 
    - `VITE_STRIPE_PUBLISHABLE_KEY` to your Stripe publishable key (optional for demo mode)
 3. Run the app:
    `npm run dev`
+
+## 🌐 Language Support
+
+The application supports multiple languages with real-time switching:
+
+- **Slovak (SK)** 🇸🇰 - Default language
+- **English (EN)** 🇬🇧 - Full translation coverage
+
+### Features:
+- **Header Language Switcher**: Click the flag dropdown in the top navigation
+- **Complete Translation**: All UI elements, product descriptions, and system messages
+- **Nested Translation Keys**: Organized structure for easy maintenance
+- **Real-time Switching**: Instant language change without page reload
+
+### Adding New Languages:
+1. Add language code to `Language` type in `context/LanguageContext.tsx`
+2. Add translations to the `translations` object
+3. Add flag and option to the language switcher dropdown
 
 ## Stripe Integration
 
@@ -101,7 +121,8 @@ See `public/images/README.md` for detailed instructions.
 │   └── images.ts        # Image path management
 ├── context/            # React Context providers
 │   ├── CartContext.tsx
-│   └── CurrencyContext.tsx
+│   ├── CurrencyContext.tsx
+│   └── LanguageContext.tsx
 ├── hooks/              # Custom React hooks
 ├── services/           # External service integrations
 ├── public/images/      # Static image assets

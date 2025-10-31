@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 // Utility to generate a random number in a range
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
@@ -38,6 +39,7 @@ const SPARKLE_DURATION_MS = 700;
 
 export const AddToCartButton: React.FC<AddToCartButtonProps> = ({ onClick }) => {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const { t } = useLanguage();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -82,7 +84,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({ onClick }) => 
       onClick={handleClick}
       className="relative w-full sm:w-auto flex-grow bg-ferrari-red text-white font-bold text-lg uppercase tracking-wider py-4 px-8 rounded-md transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-500/50"
     >
-      <span className="relative">Add to Cart</span>
+      <span className="relative">{t('product.addToCart')}</span>
       {sparkles.map(sparkle => (
         <span key={sparkle.id} className="sparkle-instance" style={sparkle.style}>
           <StarIcon color={sparkle.color} />

@@ -36,7 +36,7 @@ export const getGalleryImages = (useLocal = false) => {
     images.FERRARI,
     images.LAMBORGHINI,
     images.PORSCHE,
-    images.DETAIL_SHOT,
+    // Removed DETAIL_SHOT from gallery
   ];
 };
 
@@ -54,4 +54,19 @@ export const getProductImage = (productType: 'ferrari' | 'lamborghini' | 'porsch
     default:
       return images.FERRARI_FRAME;
   }
+};
+
+// Helper function to map gallery image URL to product ID
+export const getProductIdFromImage = (imageUrl: string, useLocal = false): string | null => {
+  const images = useLocal ? LOCAL_GALLERY_IMAGES : GALLERY_IMAGES;
+  
+  if (imageUrl === images.FERRARI) {
+    return 'ferrari-dxfe-001';
+  } else if (imageUrl === images.LAMBORGHINI) {
+    return 'lamborghini-dxle-001';
+  } else if (imageUrl === images.PORSCHE) {
+    return 'porsche-dxpe-001';
+  }
+  
+  return null; // Detail shot or unknown image
 };

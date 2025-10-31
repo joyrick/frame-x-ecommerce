@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../hooks/useCart';
 import { useCurrency } from '../hooks/useCurrency';
+import { useLanguage } from '../context/LanguageContext';
 
 interface MockStripeCheckoutProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
 }) => {
   const { state } = useCart();
   const { formatPrice } = useCurrency();
+  const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentStep, setCurrentStep] = useState<'checkout' | 'processing' | 'success'>('checkout');
   
@@ -74,7 +76,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
             <div className="w-8 h-8 bg-[#635bff] rounded flex items-center justify-center">
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900">Stripe Checkout</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('stripe.title')}</h2>
           </div>
           <button 
             onClick={onClose}
@@ -94,12 +96,12 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
               {/* Payment Form */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Payment details</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">{t('stripe.paymentDetails')}</h3>
                   
                   {/* Email */}
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                      {t('stripe.email')}
                     </label>
                     <input
                       type="email"
@@ -114,7 +116,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                   {/* Card Number */}
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Card number
+                      {t('stripe.cardNumber')}
                     </label>
                     <div className="relative">
                       <input
@@ -136,7 +138,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expiry date
+                        {t('stripe.expiryDate')}
                       </label>
                       <input
                         type="text"
@@ -149,7 +151,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        CVC
+                        {t('stripe.cvc')}
                       </label>
                       <input
                         type="text"
@@ -165,7 +167,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                   {/* Name */}
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Cardholder name
+                      {t('stripe.cardholderName')}
                     </label>
                     <input
                       type="text"
@@ -179,14 +181,14 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
 
                   {/* Address */}
                   <div className="space-y-4">
-                    <h4 className="text-sm font-medium text-gray-900">Billing address</h4>
+                    <h4 className="text-sm font-medium text-gray-900">{t('stripe.billingAddress')}</h4>
                     
                     <input
                       type="text"
                       value={formData.address}
                       onChange={(e) => handleInputChange('address', e.target.value)}
                       className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#635bff] focus:border-transparent"
-                      placeholder="Address"
+                      placeholder={t('stripe.address')}
                       required
                     />
                     
@@ -196,7 +198,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                         value={formData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
                         className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#635bff] focus:border-transparent"
-                        placeholder="City"
+                        placeholder={t('stripe.city')}
                         required
                       />
                       <input
@@ -204,7 +206,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                         value={formData.zip}
                         onChange={(e) => handleInputChange('zip', e.target.value)}
                         className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#635bff] focus:border-transparent"
-                        placeholder="ZIP"
+                        placeholder={t('stripe.zip')}
                         required
                       />
                     </div>
@@ -214,7 +216,7 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
 
               {/* Order Summary */}
               <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Order summary</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">{t('stripe.orderSummary')}</h3>
                 
                 <div className="space-y-3">
                   {state.items.map(item => (
@@ -233,16 +235,16 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
 
                 <div className="border-t border-gray-200 mt-4 pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal</span>
+                    <span className="text-gray-600">{t('cart.subtotal')}</span>
                     <span className="text-gray-900">{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Tax (VAT 21%)</span>
+                    <span className="text-gray-600">{t('stripe.tax')}</span>
                     <span className="text-gray-900">{formatPrice(tax)}</span>
                   </div>
                   <div className="border-t border-gray-200 pt-2">
                     <div className="flex justify-between text-lg font-semibold">
-                      <span className="text-gray-900">Total</span>
+                      <span className="text-gray-900">{t('stripe.total')}</span>
                       <span className="text-gray-900">{formatPrice(total)}</span>
                     </div>
                   </div>
@@ -253,15 +255,15 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                   disabled={isProcessing}
                   className="w-full mt-6 bg-[#635bff] text-white py-3 px-4 rounded-md font-medium hover:bg-[#5a52f5] focus:outline-none focus:ring-2 focus:ring-[#635bff] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Pay {formatPrice(total)}
+                  {t('stripe.pay')} {formatPrice(total)}
                 </button>
 
                 <div className="mt-4 text-center">
                   <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
-                    <span>🔒 Secured by Stripe</span>
+                    <span>{t('stripe.secured')}</span>
                   </div>
                   <div className="mt-2 text-xs text-gray-400">
-                    Your payment information is encrypted and secure
+                    {t('stripe.encrypted')}
                   </div>
                 </div>
               </div>
@@ -272,8 +274,8 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
         {currentStep === 'processing' && (
           <div className="p-12 text-center">
             <div className="w-16 h-16 border-4 border-[#635bff] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Processing your payment...</h3>
-            <p className="text-gray-600">Please don't close this window</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('stripe.processing')}</h3>
+            <p className="text-gray-600">{t('stripe.doNotClose')}</p>
           </div>
         )}
 
@@ -284,8 +286,8 @@ export const MockStripeCheckout: React.FC<MockStripeCheckoutProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment successful!</h3>
-            <p className="text-gray-600">Your order has been confirmed</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('stripe.success')}</h3>
+            <p className="text-gray-600">{t('stripe.confirmed')}</p>
           </div>
         )}
       </div>

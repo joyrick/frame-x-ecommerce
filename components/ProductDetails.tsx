@@ -6,6 +6,7 @@ import { AddToCartButton } from './AddToCartButton';
 import { useCart } from '../hooks/useCart';
 import { ProductGallery } from './ProductGallery';
 import { useCurrency } from '../hooks/useCurrency';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ProductDetailsProps {
   product: Product;
@@ -31,6 +32,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { dispatch } = useCart();
   const { formatPrice } = useCurrency();
+  const { t } = useLanguage();
 
   const handleAddToCart = () => {
     dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
@@ -42,6 +44,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
     onEditionChange(id);
     setIsDropdownOpen(false);
   };
+  
+  // Reset quantity when product changes
+  useEffect(() => {
+    setQuantity(1);
+  }, [product.id]);
   
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,13 +66,21 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   return (
     <div className="flex flex-col space-y-6 max-w-lg">
       <div>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white uppercase">{product.name}</h1>
-        <p className="text-lg font-semibold text-ferrari-red mt-1 tracking-widest">{product.edition}</p>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white uppercase">{t('product.name')}</h1>
+        <p className="text-lg font-semibold text-ferrari-red mt-1 tracking-widest">
+          {product.id === 'ferrari-dxfe-001' && t('product.ferrari.edition')}
+          {product.id === 'lamborghini-dxle-001' && t('product.lamborghini.edition')}
+          {product.id === 'porsche-dxpe-001' && t('product.porsche.edition')}
+        </p>
       </div>
-      <p className="text-gray-300 leading-relaxed">{product.description}</p>
+      <p className="text-gray-300 leading-relaxed">
+        {product.id === 'ferrari-dxfe-001' && t('product.ferrari.description')}
+        {product.id === 'lamborghini-dxle-001' && t('product.lamborghini.description')}
+        {product.id === 'porsche-dxpe-001' && t('product.porsche.description')}
+      </p>
       
       <div>
-        <label htmlFor="edition-select-button" className="block text-sm font-medium text-gray-400 mb-2">Select Edition</label>
+        <label htmlFor="edition-select-button" className="block text-sm font-medium text-gray-400 mb-2">{t('product.selectEdition')}</label>
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
@@ -116,8 +131,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
         activeImageUrl={activeImageUrl}
       />
 
-      <div className="text-4xl font-bold text-white tracking-wide">
+      <div className="text-4xl font-bold text-white tracking-wide transition-all duration-300 ease-in-out">
         {formatPrice(product.price * quantity)}
+        {product.id === 'porsche-dxpe-001' && (
+          <span className="text-base font-normal text-ferrari-red ml-2">{t('product.specialPrice')}</span>
+        )}
       </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
         <QuantitySelector quantity={quantity} setQuantity={setQuantity} />

@@ -2,12 +2,14 @@
 import React from 'react';
 import { Review } from '../types';
 import { StarRating } from './StarRating';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ReviewsProps {
   reviews: Review[];
 }
 
 export const Reviews: React.FC<ReviewsProps> = ({ reviews }) => {
+  const { t } = useLanguage();
   if (!reviews || reviews.length === 0) {
     return null; // Don't render anything if there are no reviews
   }
@@ -17,7 +19,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ reviews }) => {
 
   return (
     <div className="border-t border-gray-800 py-6">
-      <h2 className="text-xl font-bold tracking-wide text-white mb-3">Customer Reviews</h2>
+      <h2 className="text-xl font-bold tracking-wide text-white mb-3">{t('reviews.title')}</h2>
       <div className="flex items-center gap-4 mb-4">
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-black text-white">{averageRating.toFixed(1)}</span>
@@ -25,7 +27,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ reviews }) => {
         </div>
         <div className="flex flex-col">
           <StarRating rating={averageRating} />
-          <p className="text-sm text-gray-500 mt-1">Based on {totalReviews} reviews</p>
+          <p className="text-sm text-gray-500 mt-1">{t('reviews.basedOn').replace('{count}', totalReviews.toString())}</p>
         </div>
       </div>
 

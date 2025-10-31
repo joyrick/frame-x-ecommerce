@@ -16,7 +16,8 @@ import { Footer } from './components/Footer';
 import { CarouselOverlay } from './components/CarouselOverlay';
 import { Reviews } from './components/Reviews';
 import { Product } from './types';
-import { PRODUCT_IMAGES, getGalleryImages } from './constants/images';
+import { PRODUCT_IMAGES, getGalleryImages, getProductIdFromImage } from './constants/images';
+import { useLanguage } from './context/LanguageContext';
 
 const products: Product[] = [
   {
@@ -63,6 +64,7 @@ const galleryImages = getGalleryImages(true); // Using local images with ferrari
 
 
 const App: React.FC = () => {
+  const { t } = useLanguage();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
@@ -82,6 +84,12 @@ const App: React.FC = () => {
 
   const handleEditionChange = useCallback((productId: string) => {
     setSelectedProductId(productId);
+    
+    // Update active image to match the selected product
+    const selectedProduct = products.find(p => p.id === productId);
+    if (selectedProduct) {
+      setActiveImageUrl(selectedProduct.imageUrl);
+    }
   }, []);
 
   const handleToggleCart = useCallback(() => {
@@ -95,7 +103,14 @@ const App: React.FC = () => {
 
   const handleGalleryImageClick = useCallback((imageUrl: string) => {
     setActiveImageUrl(imageUrl);
-  }, []);
+    
+    // Map gallery image to corresponding product
+    const productId = getProductIdFromImage(imageUrl, true);
+    
+    if (productId && productId !== selectedProductId) {
+      setSelectedProductId(productId);
+    }
+  }, [selectedProductId]);
   
   const handleFullscreenRequest = useCallback(() => {
     const currentIndex = galleryImages.findIndex(img => img === activeImageUrl);
@@ -130,7 +145,7 @@ const App: React.FC = () => {
                 product={currentProduct}
                 products={products}
                 onEditionChange={handleEditionChange}
-                onAddToCart={() => showToast('Added to Cart')}
+                onAddToCart={() => showToast(t('cart.added'))}
                 galleryImages={galleryImages}
                 activeImageUrl={activeImageUrl}
                 onGalleryImageClick={handleGalleryImageClick}
