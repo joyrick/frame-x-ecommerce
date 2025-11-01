@@ -17,8 +17,34 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = () => {
-    // Redirect to Stripe payment link
-    window.open('https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00', '_blank');
+    // If cart has only one type of product, use quantity parameter
+    if (state.items.length === 1) {
+      const item = state.items[0];
+      const quantity = item.quantity;
+      
+      // Different payment links for different products
+      const paymentLinks: { [key: string]: string } = {
+        'ferrari-dxfe-001': 'https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00',
+        'lamborghini-dxle-001': 'https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00', // Replace with actual Lamborghini link
+        'porsche-dxpe-001': 'https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00' // Replace with actual Porsche link
+      };
+      
+      const baseUrl = paymentLinks[item.id] || paymentLinks['ferrari-dxfe-001'];
+      const clientReferenceId = `${item.id}_qty${quantity}_${Date.now()}`;
+      const checkoutUrl = `${baseUrl}?quantity=${quantity}&client_reference_id=${clientReferenceId}`;
+      
+      window.open(checkoutUrl, '_blank');
+    } else {
+      // For multiple products, create a summary in client_reference_id
+      const orderSummary = state.items.map(item => `${item.id.split('-')[0]}_${item.quantity}`).join('_');
+      const totalQuantity = state.items.reduce((sum, item) => sum + item.quantity, 0);
+      const clientReferenceId = `multi_${orderSummary}_${Date.now()}`;
+      
+      // Use Ferrari link as default for mixed carts (you might want to create a "mixed" payment link)
+      const checkoutUrl = `https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00?quantity=${totalQuantity}&client_reference_id=${clientReferenceId}`;
+      
+      window.open(checkoutUrl, '_blank');
+    }
   };
 
   return (
