@@ -14,7 +14,6 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const { state } = useCart();
   const { formatPrice } = useCurrency();
   const { t } = useLanguage();
-  
   // Recalculate subtotal whenever state.items changes
   const subtotal = React.useMemo(() => 
     state.items.reduce((sum, item) => sum + item.price * item.quantity, 0), 
@@ -39,7 +38,19 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       
       const baseUrl = paymentLinks[item.id] || paymentLinks['ferrari-dxfe-001'];
       const clientReferenceId = `${item.id}_qty${quantity}_${Date.now()}`;
-      const checkoutUrl = `${baseUrl}?quantity=${quantity}&client_reference_id=${clientReferenceId}`;
+      
+      // Try different URL formats for Stripe payment links
+      // Format 1: Standard query parameter
+      const checkoutUrl1 = `${baseUrl}?quantity=${quantity}&client_reference_id=${clientReferenceId}`;
+      
+      // Format 2: Using prefilled_email and custom parameters (alternative)
+      const checkoutUrl2 = `${baseUrl}?client_reference_id=${clientReferenceId}&quantity=${quantity}`;
+      
+      // Format 3: Using line_items array (for more complex scenarios)
+      const checkoutUrl3 = `${baseUrl}?line_items[0][quantity]=${quantity}&client_reference_id=${clientReferenceId}`;
+      
+      // Use the standard format first
+      const checkoutUrl = checkoutUrl1;
       
       console.log(`🛒 Single product checkout: ${item.edition} x${quantity}`);
       console.log(`🔗 Stripe URL: ${checkoutUrl}`);
