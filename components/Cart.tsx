@@ -14,12 +14,20 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const { state } = useCart();
   const { formatPrice } = useCurrency();
   const { t } = useLanguage();
-  const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  
+  // Recalculate subtotal whenever state.items changes
+  const subtotal = React.useMemo(() => 
+    state.items.reduce((sum, item) => sum + item.price * item.quantity, 0), 
+    [state.items]
+  );
 
-  const handleCheckout = () => {
+  const handleCheckout = React.useCallback(() => {
+    // Get fresh cart state at the moment of checkout
+    const currentItems = state.items;
+    
     // If cart has only one type of product, use quantity parameter
-    if (state.items.length === 1) {
-      const item = state.items[0];
+    if (currentItems.length === 1) {
+      const item = currentItems[0];
       const quantity = item.quantity;
       
       // Different payment links for different products
@@ -33,19 +41,26 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       const clientReferenceId = `${item.id}_qty${quantity}_${Date.now()}`;
       const checkoutUrl = `${baseUrl}?quantity=${quantity}&client_reference_id=${clientReferenceId}`;
       
+      console.log(`🛒 Single product checkout: ${item.edition} x${quantity}`);
+      console.log(`🔗 Stripe URL: ${checkoutUrl}`);
+      
       window.open(checkoutUrl, '_blank');
-    } else {
+    } else if (currentItems.length > 1) {
       // For multiple products, create a summary in client_reference_id
-      const orderSummary = state.items.map(item => `${item.id.split('-')[0]}_${item.quantity}`).join('_');
-      const totalQuantity = state.items.reduce((sum, item) => sum + item.quantity, 0);
+      const orderSummary = currentItems.map(item => `${item.id.split('-')[0]}_${item.quantity}`).join('_');
+      const totalQuantity = currentItems.reduce((sum, item) => sum + item.quantity, 0);
       const clientReferenceId = `multi_${orderSummary}_${Date.now()}`;
+      
+      console.log(`🛒 Multi-product checkout: ${currentItems.length} items, total quantity: ${totalQuantity}`);
       
       // Use Ferrari link as default for mixed carts (you might want to create a "mixed" payment link)
       const checkoutUrl = `https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00?quantity=${totalQuantity}&client_reference_id=${clientReferenceId}`;
       
+      console.log(`🔗 Stripe URL: ${checkoutUrl}`);
+      
       window.open(checkoutUrl, '_blank');
     }
-  };
+  }, [state.items]);
 
   return (
     <>
@@ -88,6 +103,13 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                 <span className="font-semibold text-gray-300">{t('cart.subtotal')}</span>
                 <span className="font-bold text-white">{formatPrice(subtotal)}</span>
               </div>
+              
+              {/* Show total quantity info */}
+              <div className="flex justify-between items-center mb-3 text-sm text-gray-400">
+                <span>{t('cart.quantity')}: {state.items.reduce((sum, item) => sum + item.quantity, 0)} {t('cart.items')}</span>
+                <span>{state.items.length} {state.items.length === 1 ? 'product' : 'products'}</span>
+              </div>
+              
               <button 
                 onClick={handleCheckout}
                 className="w-full bg-ferrari-red text-white font-bold text-lg uppercase py-4 rounded-md transition-colors duration-200 hover:bg-red-700 flex items-center justify-center"

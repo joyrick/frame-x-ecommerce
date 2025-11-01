@@ -50,7 +50,9 @@ const translations = {
       empty: 'Váš košík je prázdny.',
       subtotal: 'Medzisúčet',
       checkout: 'Pokladňa so Stripe',
-      added: 'Pridané do košíka'
+      added: 'Pridané do košíka',
+      quantity: 'Množstvo',
+      items: 'kusov'
     },
     
     // Reviews
@@ -149,7 +151,9 @@ const translations = {
       empty: 'Your cart is empty.',
       subtotal: 'Subtotal',
       checkout: 'Checkout with Stripe',
-      added: 'Added to Cart'
+      added: 'Added to Cart',
+      quantity: 'Quantity',
+      items: 'items'
     },
     
     // Reviews
