@@ -1,9 +1,8 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useCart } from '../hooks/useCart';
 import { CartItem } from './CartItem';
 import { useCurrency } from '../hooks/useCurrency';
-import { MockStripeCheckout } from './MockStripeCheckout';
 import { useLanguage } from '../context/LanguageContext';
 
 interface CartProps {
@@ -12,24 +11,14 @@ interface CartProps {
 }
 
 export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
-  const { state, dispatch } = useCart();
+  const { state } = useCart();
   const { formatPrice } = useCurrency();
   const { t } = useLanguage();
-  const [isStripeCheckoutOpen, setIsStripeCheckoutOpen] = useState(false);
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = () => {
-    setIsStripeCheckoutOpen(true);
-  };
-
-  const handleStripeSuccess = () => {
-    dispatch({ type: 'CLEAR_CART' });
-    setIsStripeCheckoutOpen(false);
-    onClose();
-  };
-
-  const handleStripeClose = () => {
-    setIsStripeCheckoutOpen(false);
+    // Redirect to Stripe payment link
+    window.open('https://buy.stripe.com/test_bJe14n1H832055s8Vp87K00', '_blank');
   };
 
   return (
@@ -83,12 +72,6 @@ export const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
           )}
         </div>
       </div>
-      
-      <MockStripeCheckout
-        isOpen={isStripeCheckoutOpen}
-        onClose={handleStripeClose}
-        onSuccess={handleStripeSuccess}
-      />
     </>
   );
 };

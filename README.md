@@ -20,7 +20,9 @@ A modern, luxury e-commerce application showcasing premium frames with Ferrari, 
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://your-demo-url.com) <!-- Add your deployed URL here -->
+**[🔗 View Live Demo](https://framexeshop-7p66bimt9-joyricks-projects.vercel.app)**
+
+Deployed on Vercel with automatic deployments from GitHub.
 
 ## Run Locally
 
